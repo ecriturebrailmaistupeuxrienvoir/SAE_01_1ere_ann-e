@@ -6,19 +6,12 @@ class player :
     self.total_gem = 0
     self.temp_gem = 0
     self.in_game = False
-    
-  def add_temp_gem(self, gem) :
-    self.temp_gem += gem
-   
-  def delete_temp_gem(self) :
-    self.temp_gem = 0
-    
-  def enter_game(self) :
-    self.in_game = True
-  
-  def quit_game(self) :
-    self.in_game = False
-    
-  def add_total_gem(self, value) :
-    self.total_gem += value
-  
+
+class Card :
+  __init__(self, danger, type_danger, treasure, nbr_gem, relic, val_relic):
+    self.danger = danger
+    self.type_danger = type_danger
+    self.treasure = treasure
+    self.nbr_gem = nbr_gem
+    self.relic = relic
+    self.val_relic = val_relic
