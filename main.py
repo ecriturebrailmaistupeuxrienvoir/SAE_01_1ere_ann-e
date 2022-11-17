@@ -44,3 +44,14 @@ def trap_check(deck_shown):
             if i in trap_in_game :
                 trap_detected = True
     return trap_detected
+
+
+def check_end(list_player,trap_detected):
+    end_round = False
+    player_out = 0
+    for i in range(len(list_player)):
+        if list_player[i].in_game == False :
+            player_out += 1
+    if trap_detected or player_out == len(list_player):
+        end_round = True
+    return end_round
