@@ -38,10 +38,9 @@ def trap_check(deck_shown):
     for i in range(len(deck_shown)):
         if deck_shown[i].type_danger !=0 :
             trap_in_game.append(deck_shown[i].type_danger)
-    temp_trap_deck = trap_in_game
     for i in range(1,6):
         if i in trap_in_game :
-            temp_trap_deck.remove(i)
+            trap_in_game.remove(i)
             if i in trap_in_game :
                 trap_detected = True
                 return trap_detected
