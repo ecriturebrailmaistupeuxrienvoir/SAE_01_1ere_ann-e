@@ -30,3 +30,19 @@ def create_deck() :
         deck.append(Card(False, 0, False, 0, True, value_relic[i]))
     random.shuffle(deck)
     return deck
+
+
+def trap_check(deck_shown):
+    trap_detected = False
+    trap_in_game = []
+    for i in range(len(deck_shown)):
+        if deck_shown[i].type_danger !=0 :
+            trap_in_game.append(deck_shown[i].type_danger)
+    temp_trap_deck = trap_in_game
+    for i in range(1,6):
+        if i in trap_in_game :
+            temp_trap_deck.remove(i)
+            if i in trap_in_game :
+                trap_detected = True
+                return trap_detected
+    return trap_detected
