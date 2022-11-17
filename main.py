@@ -22,9 +22,3 @@ class player :
   def add_total_gem(self, value) :
     self.total_gem += value
   
-  def get_temp_gem(self):
-    return self.temp_gem
-  
-  def get_total_gem(self):
-    return self.total_gem
-  
