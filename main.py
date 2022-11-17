@@ -43,5 +43,4 @@ def trap_check(deck_shown):
             trap_in_game.remove(i)
             if i in trap_in_game :
                 trap_detected = True
-                return trap_detected
     return trap_detected
