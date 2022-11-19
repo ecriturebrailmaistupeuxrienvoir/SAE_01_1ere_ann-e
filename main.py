@@ -31,12 +31,18 @@ def create_deck() :
     random.shuffle(deck)
     return deck
 
+def draw(deck,deck_shown):
+    new_card = deck[0]
+    deck_shown.append(new_card)
+    # print('--- ',new_card.nbr_gem,' ---')
+    deck.remove(new_card)
+    return deck, deck_shown
 
 def trap_check(deck_shown):
     trap_detected = False
     trap_in_game = []
     for i in range(len(deck_shown)):
-        if deck_shown[i].type_danger !=0 :
+        if deck_shown[i].type_danger != 0 :
             trap_in_game.append(deck_shown[i].type_danger)
     for i in range(1,6):
         if i in trap_in_game :
@@ -44,7 +50,6 @@ def trap_check(deck_shown):
             if i in trap_in_game :
                 trap_detected = True
     return trap_detected
-
 
 def check_end(list_player,trap_detected):
     end_round = False
