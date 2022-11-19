@@ -31,12 +31,15 @@ def create_deck() :
     random.shuffle(deck)
     return deck
 
-def draw(deck,deck_shown):
+def draw(deck,deck_shown,list_player):
     new_card = deck[0]
+    if new_card.treasure :
+        for i in range(len(list_player)):
+            list_player[i].temp_gem += (new_card.nbr_gem//len(list_player))
+        new_card.nbr_gem -= (new_card.nbr_gem//len(list_player))*len(list_player)
     deck_shown.append(new_card)
-    # print('--- ',new_card.nbr_gem,' ---')
     deck.remove(new_card)
-    return deck, deck_shown
+    return deck, deck_shown, list_player
 
 def trap_check(deck_shown):
     trap_detected = False
