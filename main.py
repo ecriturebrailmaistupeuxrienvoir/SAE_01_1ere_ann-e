@@ -32,16 +32,40 @@ def create_deck() :
     return deck
 
 def draw(deck,deck_shown,list_player):
+    '''
+        Prend la première carte du deck mélangé et la met sur le plateau de jeu (dans le dec affiché)
+        Réparti les diamants de la carte entre les joueurs encore en jeu
+
+        ENTREE
+            deck, deck_shown, list_player
+
+        SORTIE
+            deck, deck_shown, list_player
+    '''
     new_card = deck[0]
+    nbr_in_game = 0
     if new_card.treasure :
         for i in range(len(list_player)):
-            list_player[i].temp_gem += (new_card.nbr_gem//len(list_player))
-        new_card.nbr_gem -= (new_card.nbr_gem//len(list_player))*len(list_player)
+            if list_player[i].in_game :
+                nbr_in_game += 1
+        for i in range(len(list_player)):
+            if list_player[i].in_game :
+                list_player[i].temp_gem += (new_card.nbr_gem//nbr_in_game)
+        new_card.nbr_gem -= (new_card.nbr_gem//nbr_in_game)*nbr_in_game
     deck_shown.append(new_card)
     deck.remove(new_card)
     return deck, deck_shown, list_player
 
 def trap_check(deck_shown):
+    '''
+        Détecte si un piège est présent deux fois sur le plateau
+    
+        ENTREE
+            deck_shown
+        
+        SORTIE
+            trap_detected
+    '''
     trap_detected = False
     trap_in_game = []
     for i in range(len(deck_shown)):
