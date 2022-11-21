@@ -37,10 +37,10 @@ def draw(deck,deck_shown,list_player):
         Réparti les diamants de la carte entre les joueurs encore en jeu
 
         ENTREE
-            deck, deck_shown, list_player
+            deck : liste de cartes, deck_shown : liste de cartes, list_player : liste de joueurs
 
         SORTIE
-            deck, deck_shown, list_player
+            deck : liste de cartes, deck_shown : liste de cartes, list_player : liste de joueurs
     '''
     new_card = deck[0]
     nbr_in_game = 0
@@ -61,10 +61,10 @@ def trap_check(deck_shown):
         Détecte si un piège est présent deux fois sur le plateau
     
         ENTREE
-            deck_shown
+            deck_shown : liste de cartes
         
         SORTIE
-            trap_detected
+            trap_detected : booléen
     '''
     trap_detected = False
     trap_in_game = []
@@ -79,6 +79,17 @@ def trap_check(deck_shown):
     return trap_detected
 
 def check_end(list_player,trap_detected):
+    '''
+        Détecte les conditions de fin de manche
+        Détecte si tous les joueurs sont sortis
+        Renvoie True si tous les joueurs sont sortis ou si un piège est présent deux fois sur le plateau
+
+        ENTREE
+            list_player : liste de joueurs, trap_detected : booléen
+        
+        SORTIE
+            end_round : booléen
+    '''
     end_round = False
     player_out = 0
     for i in range(len(list_player)):
@@ -87,3 +98,44 @@ def check_end(list_player,trap_detected):
     if trap_detected or player_out == len(list_player):
         end_round = True
     return end_round
+
+def display(deck_shown,list_player):
+    '''
+        Affiche les cartes présentes sur le plateau :
+            Les cartes trésor sont affichées avec le nombre de gemmes qu'il leur reste après la distribution
+            Les cartes danger sont affichées avec leur type de danger (1 à 5)
+
+        Affiche pour chaque joueur :
+            Son nom
+            Son statut dans le jeu (dans le temple / au camp)
+            Le nombre de gemmes qu'il a dans le temple
+            Le nombre de gemmes qu'il a au camp
+        
+        ENTREE
+            deck_shown : liste de cartes, list_player : liste de joueurs
+        
+        SORTIE
+            ---
+    '''
+    temp_total = 0
+    for i in range (len(deck_shown)):
+        if deck_shown[i].danger :
+            print('DANGER',deck_shown[i].type_danger)
+        elif deck_shown[i].treasure :
+            if deck_shown[i].nbr_gem > 1 :
+                print('TREASURE :',deck_shown[i].nbr_gem,'gems remaining')
+            else :
+                print('TREASURE :',deck_shown[i].nbr_gem,'gem remaining')
+            temp_total += deck_shown[i].nbr_gem
+        elif deck_shown[i].relic :
+            print('RELIC')
+    print()
+    print('Remaining gems :',temp_total)
+    print()
+    for i in range (len(list_player)):
+        if list_player[i].in_game :
+            position = '(in the temple)'
+        else :
+            position = '(at camp)'
+        print('{:>10s}{:>18s}{:>8s}{:>20s}'.format(str(list_player[i].name),position+' :',str(list_player[i].temp_gem)+' gems',str(list_player[i].total_gem)+' stocked gems'))
+    print()
