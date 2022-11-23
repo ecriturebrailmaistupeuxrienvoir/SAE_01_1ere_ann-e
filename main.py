@@ -1,5 +1,6 @@
 #Main
 import random
+import os
 
 class player :
     def __init__(self, name) :
@@ -40,7 +41,7 @@ def start_game():
     for i in range (nb_player) :
         print("Joueur ",i+1,",entrez votre nom")
         name = str(input())
-        list_player.append(name)
+        list_player.append(player(name))
     
     #Création deck
     deck=create_deck()
@@ -133,25 +134,26 @@ def display(deck_shown,list_player):
         SORTIE
             ---
     '''
+    os.system('clear')
     temp_total = 0
     for i in range (len(deck_shown)):
         if deck_shown[i].danger :
             print('DANGER',deck_shown[i].type_danger)
         elif deck_shown[i].treasure :
             if deck_shown[i].nbr_gem > 1 :
-                print('TREASURE :',deck_shown[i].nbr_gem,'gems remaining')
+                print('TRESOR :',deck_shown[i].nbr_gem,'gemmes restantes')
             else :
-                print('TREASURE :',deck_shown[i].nbr_gem,'gem remaining')
+                print('TRESOR :',deck_shown[i].nbr_gem,'gemmes restantes')
             temp_total += deck_shown[i].nbr_gem
         elif deck_shown[i].relic :
-            print('RELIC')
+            print('RELIQUE')
     print()
-    print('Remaining gems :',temp_total)
+    print('Gemmes restantes :',temp_total)
     print()
     for i in range (len(list_player)):
         if list_player[i].in_game :
-            position = '(in the temple)'
+            position = '(dans le temple)'
         else :
-            position = '(at camp)'
-        print('{:>10s}{:>18s}{:>8s}{:>20s}'.format(str(list_player[i].name),position+' :',str(list_player[i].temp_gem)+' gems',str(list_player[i].total_gem)+' stocked gems'))
+            position = '(au campement)'
+        print('{:>15s}{:>19s}{:>11s}{:>21s}'.format(str(list_player[i].name),position+' :',str(list_player[i].temp_gem)+' gemmes',str(list_player[i].total_gem)+' gemmes stockées'))
     print()
