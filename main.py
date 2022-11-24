@@ -7,7 +7,8 @@ class player :
         self.name = name
         self.total_gem = 0
         self.temp_gem = 0
-        self.in_game = False
+        self.in_game = True
+        self.nbr_relic = 0
 
 class Card :
     def __init__(self, danger, type_danger, treasure, nbr_gem, relic) :
@@ -21,12 +22,12 @@ def create_deck() :
     deck = []
     val_treasure = [1, 2, 3, 4, 5, 5, 7, 7, 9, 11, 11, 13, 14, 15, 17]
     for i in range (15) :
-        deck.append(Card(False, 0, True, val_treasure[i], False, 0))
+        deck.append(Card(False, 0, True, val_treasure[i], False))
     for i in range (1, 6) :
         for j in range (3) :
-            deck.append(Card(True, i, False, 0, False, 0))
+            deck.append(Card(True, i, False, 0, False))
     for i in range (5) :
-        deck.append(Card(False, 0, False, 0, True,))
+        deck.append(Card(False, 0, False, 0, True))
     random.shuffle(deck)
     return deck
 
@@ -116,7 +117,7 @@ def check_end(list_player,trap_detected):
         end_round = True
     return end_round
 
-def display(deck_shown,list_player):
+def display(deck_shown,list_player,round):
     '''
         Affiche les cartes présentes sur le plateau :
             Les cartes trésor sont affichées avec le nombre de gemmes qu'il leur reste après la distribution
@@ -135,15 +136,13 @@ def display(deck_shown,list_player):
             ---
     '''
     os.system('clear')
+    print('Manche',round,'/ 5','\n')
     temp_total = 0
     for i in range (len(deck_shown)):
         if deck_shown[i].danger :
             print('DANGER',deck_shown[i].type_danger)
         elif deck_shown[i].treasure :
-            if deck_shown[i].nbr_gem > 1 :
-                print('TRESOR :',deck_shown[i].nbr_gem,'gemmes restantes')
-            else :
-                print('TRESOR :',deck_shown[i].nbr_gem,'gemmes restantes')
+            print('TRESOR')
             temp_total += deck_shown[i].nbr_gem
         elif deck_shown[i].relic :
             print('RELIQUE')
@@ -154,6 +153,6 @@ def display(deck_shown,list_player):
         if list_player[i].in_game :
             position = '(dans le temple)'
         else :
-            position = '(au campement)'
+            position = '(au campement) '
         print('{:>15s}{:>19s}{:>11s}{:>21s}'.format(str(list_player[i].name),position+' :',str(list_player[i].temp_gem)+' gemmes',str(list_player[i].total_gem)+' gemmes stockées'))
     print()
