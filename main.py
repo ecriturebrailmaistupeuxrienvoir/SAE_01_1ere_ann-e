@@ -259,3 +259,11 @@ def end_game(list_player):
                 temp_name.append(list_player[j].name)
                 j = len(list_player)-1
         print(i+1,':',temp_name[i],temp_points[i])
+def game():
+    nround = 0
+    list_player = start_game
+    for i in range (5) :
+        nround += 1
+        list_player = round(list_player, nround)
+    end_game(list_player)
+        
