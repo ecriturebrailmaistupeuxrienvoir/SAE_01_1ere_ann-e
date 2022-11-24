@@ -90,6 +90,26 @@ def trap_check(deck_shown):
                 trap_detected = True
     return trap_detected
 
+def find_relic_val(list_player):
+    '''
+        Trouve la valeur de la prochaine relique qui va sortir (5, 5, 5, 10, 10)
+
+        ENTREE
+            list_player : liste de joueurs
+        
+        SORTIE
+            val_relic : entier (5 ou 10)
+    '''
+    relic_sum = 0
+    val_relic = 0
+    for i in range (len(list_player)):
+        relic_sum += list_player[i].nbr_relic
+    if relic_sum < 3 :
+        val_relic = 5
+    elif relic_sum >= 3 :
+        val_relic = 10
+    return val_relic
+
 def player_action(deck_shown,list_player):
     '''
         Demande au joueur s'il souhaite continuer à jouer ou rentrer au campement
@@ -102,6 +122,7 @@ def player_action(deck_shown,list_player):
     '''
     player_out = []
     temp_total = 0
+    temp_relic = []
     for i in range (len(list_player)):
         if list_player[i].in_game :
             is_out = ''
@@ -113,6 +134,8 @@ def player_action(deck_shown,list_player):
     if len(player_out) != 0 :
         for i in range(len(deck_shown)):
             temp_total += deck_shown[i].nbr_gem
+            if deck_shown[i].relic :
+                temp_relic.append(i)
         for i in range(len(player_out)):
             list_player[player_out[i]].total_gem += list_player[player_out[i]].temp_gem
             list_player[player_out[i]].temp_gem = 0
@@ -124,6 +147,17 @@ def player_action(deck_shown,list_player):
             if deck_shown[i].treasure :
                 deck_shown[i].nbr_gem = temp_total - ((temp_total // len(player_out)) * len(player_out))
                 i = len(deck_shown)-1
+        if len(temp_relic) > 0 :
+                if len(player_out) == 1 :
+                    for i in range (len(temp_relic)):
+                        list_player[player_out[0]].total_gem += find_relic_val(list_player)
+                        list_player[player_out[0]].nbr_relic += 1
+                elif len(player_out) > 1 :
+                    for i in range (len(temp_relic)):
+                        list_player[player_out[0]].nbr_relic += 1
+                for i in range (len(temp_relic)):
+                    to_remove = deck_shown[temp_relic[i]]
+                    deck_shown.remove(to_remove)
     return deck_shown, list_player
 
 
