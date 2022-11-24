@@ -158,6 +158,7 @@ def check_end(list_player,trap_detected):
 
 def display(deck_shown,list_player,round):
     '''
+        Affiche le numéro de la manche en cours
         Affiche les cartes présentes sur le plateau :
             Les cartes trésor sont affichées avec le nombre de gemmes qu'il leur reste après la distribution
             Les cartes danger sont affichées avec leur type de danger (1 à 5)
@@ -169,7 +170,7 @@ def display(deck_shown,list_player,round):
             Le nombre de gemmes qu'il a au camp
         
         ENTREE
-            deck_shown : liste de cartes, list_player : liste de joueurs
+            deck_shown : liste de cartes, list_player : liste de joueurs, round : int numéro de manche
         
         SORTIE
             ---
