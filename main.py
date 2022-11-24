@@ -236,3 +236,26 @@ def round(list_player, round) :
             player_action(deck_shown, list_player) 
             display(deck_shown, list_player, round)
     return list_player
+
+def end_game(list_player):
+    '''
+        Classe les joueurs en fonction du nombre de rubis et les affiche
+
+        ENTREE
+            list_player : liste de joueurs
+        
+        SORTIE
+            ---
+    '''
+    temp_points = []
+    temp_name = []
+    for i in range (len(list_player)):
+        temp_points.append(list_player[i].total_gem)
+    temp_points.sort()
+    temp_points.reverse()
+    for i in range(len(temp_points)):
+        for j in range(len(list_player)):
+            if (list_player[j].total_gem == temp_points[i]) and (list_player[j].name not in temp_name)  :
+                temp_name.append(list_player[j].name)
+                j = len(list_player)-1
+        print(i+1,':',temp_name[i],temp_points[i])
