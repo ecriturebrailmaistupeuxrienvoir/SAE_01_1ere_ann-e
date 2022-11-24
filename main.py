@@ -96,6 +96,45 @@ def trap_check(deck_shown):
                 trap_detected = True
     return trap_detected
 
+def player_action(deck_shown,list_player):
+    '''
+        Demande au joueur s'il souhaite continuer à jouer ou rentrer au campement
+        Si il veut sortir, répartit les gemmes an conséquence
+
+        ENTREE
+            deck_shown : liste de cartes, list_player : liste de joueurs
+        
+        SORTIE
+            deck_shown : liste de cartes, list_player : liste de joueurs
+    '''
+    player_out = []
+    temp_total = 0
+    if not check_end(list_player,trap_check(deck_shown)):
+        for i in range (len(list_player)):
+            if list_player[i].in_game :
+                is_out = ''
+                while (is_out != 'O') and (is_out != 'N') :
+                    is_out = input(list_player[i].name + ' Sortir ? (O/N) ').upper()
+                if is_out == 'O' :
+                    list_player[i].in_game = False
+                    player_out.append(i)
+        if len(player_out) != 0 :
+            for i in range(len(deck_shown)):
+                temp_total += deck_shown[i].nbr_gem
+            for i in range(len(player_out)):
+                list_player[player_out[i]].total_gem += list_player[player_out[i]].temp_gem
+                list_player[player_out[i]].temp_gem = 0
+                list_player[player_out[i]].total_gem += (temp_total // len(player_out))
+            for i in range (len(deck_shown)):
+                deck_shown[i].nbr_gem = 0
+            j = 0
+            for i in range (len(deck_shown)):
+                if deck_shown[i].treasure :
+                    deck_shown[i].nbr_gem = temp_total - ((temp_total // len(player_out)) * len(player_out))
+                    i = len(deck_shown)-1
+    return deck_shown, list_player
+
+
 def check_end(list_player,trap_detected):
     '''
         Détecte les conditions de fin de manche
