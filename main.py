@@ -1,4 +1,3 @@
-#Main
 import random
 import os
 
@@ -26,8 +25,7 @@ def create_deck() :
     for i in range (1, 6) :
         for j in range (3) :
             deck.append(Card(True, i, False, 0, False))
-    for i in range (5) :
-        deck.append(Card(False, 0, False, 0, True))
+    deck.append(Card(False, 0, False, 0, True))
     random.shuffle(deck)
     return deck
 
@@ -44,19 +42,15 @@ def start_game():
         name = str(input())
         list_player.append(player(name))
     
-    #Création deck
-    deck=create_deck()
     
-    return list_player, deck
+    return list_player
 
 def draw(deck,deck_shown,list_player):
     '''
         Prend la première carte du deck mélangé et la met sur le plateau de jeu (dans le dec affiché)
         Réparti les diamants de la carte entre les joueurs encore en jeu
-
         ENTREE
             deck : liste de cartes, deck_shown : liste de cartes, list_player : liste de joueurs
-
         SORTIE
             deck : liste de cartes, deck_shown : liste de cartes, list_player : liste de joueurs
     '''
@@ -100,7 +94,6 @@ def player_action(deck_shown,list_player):
     '''
         Demande au joueur s'il souhaite continuer à jouer ou rentrer au campement
         Si il veut sortir, répartit les gemmes an conséquence
-
         ENTREE
             deck_shown : liste de cartes, list_player : liste de joueurs
         
@@ -109,38 +102,36 @@ def player_action(deck_shown,list_player):
     '''
     player_out = []
     temp_total = 0
-    if not check_end(list_player,trap_check(deck_shown)):
-        for i in range (len(list_player)):
-            if list_player[i].in_game :
-                is_out = ''
-                while (is_out != 'O') and (is_out != 'N') :
-                    is_out = input(list_player[i].name + ' Sortir ? (O/N) ').upper()
-                if is_out == 'O' :
-                    list_player[i].in_game = False
-                    player_out.append(i)
-        if len(player_out) != 0 :
-            for i in range(len(deck_shown)):
-                temp_total += deck_shown[i].nbr_gem
-            for i in range(len(player_out)):
-                list_player[player_out[i]].total_gem += list_player[player_out[i]].temp_gem
-                list_player[player_out[i]].temp_gem = 0
-                list_player[player_out[i]].total_gem += (temp_total // len(player_out))
-            for i in range (len(deck_shown)):
-                deck_shown[i].nbr_gem = 0
-            j = 0
-            for i in range (len(deck_shown)):
-                if deck_shown[i].treasure :
-                    deck_shown[i].nbr_gem = temp_total - ((temp_total // len(player_out)) * len(player_out))
-                    i = len(deck_shown)-1
+    for i in range (len(list_player)):
+        if list_player[i].in_game :
+            is_out = ''
+            while (is_out != 'O') and (is_out != 'N') :
+                is_out = input(list_player[i].name + ' Sortir ? (O/N) ').upper()
+            if is_out == 'O' :
+                list_player[i].in_game = False
+                player_out.append(i)
+    if len(player_out) != 0 :
+        for i in range(len(deck_shown)):
+            temp_total += deck_shown[i].nbr_gem
+        for i in range(len(player_out)):
+            list_player[player_out[i]].total_gem += list_player[player_out[i]].temp_gem
+            list_player[player_out[i]].temp_gem = 0
+            list_player[player_out[i]].total_gem += (temp_total // len(player_out))
+        for i in range (len(deck_shown)):
+            deck_shown[i].nbr_gem = 0
+        j = 0
+        for i in range (len(deck_shown)):
+            if deck_shown[i].treasure :
+                deck_shown[i].nbr_gem = temp_total - ((temp_total // len(player_out)) * len(player_out))
+                i = len(deck_shown)-1
     return deck_shown, list_player
 
 
-def check_end(list_player,trap_detected):
+def check_end(list_player):
     '''
         Détecte les conditions de fin de manche
         Détecte si tous les joueurs sont sortis
         Renvoie True si tous les joueurs sont sortis ou si un piège est présent deux fois sur le plateau
-
         ENTREE
             list_player : liste de joueurs, trap_detected : booléen
         
@@ -152,17 +143,15 @@ def check_end(list_player,trap_detected):
     for i in range(len(list_player)):
         if list_player[i].in_game == False :
             player_out += 1
-    if trap_detected or player_out == len(list_player):
+    if player_out == len(list_player):
         end_round = True
     return end_round
 
 def display(deck_shown,list_player,round):
     '''
-        Affiche le numéro de la manche en cours
         Affiche les cartes présentes sur le plateau :
             Les cartes trésor sont affichées avec le nombre de gemmes qu'il leur reste après la distribution
             Les cartes danger sont affichées avec leur type de danger (1 à 5)
-
         Affiche pour chaque joueur :
             Son nom
             Son statut dans le jeu (dans le temple / au camp)
@@ -170,7 +159,7 @@ def display(deck_shown,list_player,round):
             Le nombre de gemmes qu'il a au camp
         
         ENTREE
-            deck_shown : liste de cartes, list_player : liste de joueurs, round : int numéro de manche
+            deck_shown : liste de cartes, list_player : liste de joueurs
         
         SORTIE
             ---
@@ -196,3 +185,20 @@ def display(deck_shown,list_player,round):
             position = '(au campement) '
         print('{:>15s}{:>19s}{:>11s}{:>21s}'.format(str(list_player[i].name),position+' :',str(list_player[i].temp_gem)+' gemmes',str(list_player[i].total_gem)+' gemmes stockées'))
     print()
+
+def round(list_player, round) :
+    deck = create_deck()
+    deck_shown = []
+    end_round = False
+    while not end_round :
+        if check_end(list_player) :
+            end_round = True
+        if not end_round :
+            draw(deck, deck_shown, list_player)
+        if trap_check(deck_shown) :
+            end_round = True
+        if not end_round :
+            display(deck_shown, list_player, round) 
+            player_action(deck_shown, list_player) 
+            display(deck_shown, list_player, round)
+    return list_player
