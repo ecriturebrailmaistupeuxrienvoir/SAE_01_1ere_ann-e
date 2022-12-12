@@ -8,6 +8,13 @@ class player :
         self.temp_gem = 0
         self.in_game = True
         self.nbr_relic = 0
+        # Affecte une image à chaque carte, supprimer pour jouer dans le terminal
+        if self.type_danger :
+            self.img = PhotoImage(file = "images/da"+str(self.type_danger)+"_card.png")
+        elif self.treasure :
+            self.img = PhotoImage(file = "images/tr_card.png")
+        else :
+            self.img = PhotoImage(file = "images/rel_card.png")
 
 class Card :
     def __init__(self, danger, type_danger, treasure, nbr_gem, relic) :
