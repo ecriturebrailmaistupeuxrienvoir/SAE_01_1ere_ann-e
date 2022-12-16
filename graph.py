@@ -24,7 +24,9 @@ def game_graph():
             list_player[j].in_game = True
             list_player[j].temp_gem = 0
         list_player = round_graph(window, list_player, i) # Lance une manche de la partie
+    window.destroy()
     window.mainloop()
+    ask_continue()
 
 
 def menu(window):
@@ -62,7 +64,7 @@ def menu(window):
             Fonction interne qui permet de vérifier et valider le nombre de joueurs et lancer la partie
 
             ENTREE
-                --- (les variables contenu dans set_nb_player() sont accessibles)
+                --- (les variables contenues dans set_nb_player() sont accessibles)
             
             SORTIE
                 --- (modifie okvar)
@@ -130,7 +132,7 @@ def start_game_graph(window,nb_player):
             Permet de vérifier que tous les joueurs ont un nom
 
             ENTREE
-                --- (les variables contenu dans start_game_graph() sont accessibles)
+                --- (les variables contenues dans start_game_graph() sont accessibles)
             
             SORTIE
                 --- (modifie okvar)
@@ -164,7 +166,7 @@ def start_game_graph(window,nb_player):
         name_ent_list[i].insert(0,"joueur " + str(i+1)) # Le nomde base d'un joueur est 'joueur n'
         name_but_list[i].place(relx = 0.65, rely = 0.05 + i*0.11)
     
-    launch_button = Button(name_win, text = "Commencer", font='Arial 15 bold', activebackground='green', command = lambda : check_list(), cursor='hand2',height=2,width=12)
+    launch_button = Button(name_win, text = "Commencer", font =' Arial 15 bold', activebackground = 'green', command = lambda : check_list(), cursor = 'hand2',height=2,width=12)
     launch_button.pack(side='bottom',pady=25)
     
     launch_button.wait_variable(okvar)
@@ -206,7 +208,7 @@ def round_graph(window, list_player, round):
             list_player
     '''
     version_graph = True # La version jouée est la version graphique
-    deck = create_deck(version_graph)
+    deck = create_deck(version_graph, round, list_player)
     deck_shown = []
     end_round = False
     
@@ -339,7 +341,7 @@ def player_action_graph(player_win, deck_shown, list_player):
             Fonction interne qui vérifie si tous les joueurs ont pris une décision
 
             ENTREE
-                --- (les variables contenu dans start_game_graph() sont accessibles)
+                --- (les variables contenues dans start_game_graph() sont accessibles)
 
             SORTIE
                 --- (modifie okvar)
@@ -349,7 +351,7 @@ def player_action_graph(player_win, deck_shown, list_player):
 
     stay_list, quit_list = button_creation_action(player_win,set_state)
 
-    bt_ok = Button(player_win, text = "Continuer", font='Arial 15', activebackground='green', command = lambda: set_ok(), cursor='hand2')
+    bt_ok = Button(player_win, text = "Continuer", font = 'Arial 15', activebackground = 'green', command = lambda: set_ok(), cursor = 'hand2')
     bt_ok.place(relx = 0.8, rely = 0.01)
 
     for i in range(len(list_player)):
@@ -393,5 +395,40 @@ def button_creation_action(player_win,set_state):
     quit_list.append(Button(player_win, text = "Sortir", command = lambda: set_state(False, 6), cursor='hand2'))
     quit_list.append(Button(player_win, text = "Sortir", command = lambda: set_state(False, 7), cursor='hand2'))
     return stay_list, quit_list
+
+
+def ask_continue():
+    '''
+        Crée une nouvelle fenêtre qui demande au joueur s'il veut rejouer ou s'il veut quitter le jeu
+
+        ENTREE
+            ---
+
+        SORTIE
+            ---
+    '''
+    end_window = Tk()
+    end_window.geometry('500x350')
+    end_window.resizable(False,False)
+    end_window.title("Diamant - Fin de partie")
+    Label(end_window, text = "Partie terminée", font = "Purisa 30 bold").pack(side = TOP, pady = 10)
+
+    def play_again():
+        '''
+            Fonction interne qui ferme la fenêtre et relance la fonction principale du jeu
+
+            ENTREE
+                --- (les variables contenues dans play_again() sont accessibles)
+            
+            SORTIE
+                ---
+        '''
+        end_window.destroy()
+        game_graph()
+    
+    Button(end_window, text = "Nouvelle partie", command = lambda : play_again(), font = 'Arial 20 bold', activebackground = 'SteelBlue1', cursor = 'hand2', height = 3, width = 15).pack(side = TOP, pady = 8)
+    Button(end_window, text = "Quitter", command = lambda : end_window.destroy(), font = 'Arial 20 bold', activebackground = 'red2', cursor = 'hand2', height = 3, width = 15).pack(side = TOP, pady = 8)
+
+    end_window.mainloop()
 
 game_graph()
