@@ -48,7 +48,7 @@ class Card :
             else :
                 self.img = PhotoImage(file = "images/rel_card.png")
 
-def create_deck(version_graph) :
+def create_deck(version_graph, round, list_player) :
     '''
         Crée le deck utilisé dans la partie pour piocher des cartes
 
@@ -58,6 +58,7 @@ def create_deck(version_graph) :
         SORTIE
             deck (list) : liste d'objets Card
     '''
+    temp_relic = 0
     deck = []
     val_treasure = [1, 2, 3, 4, 5, 5, 7, 7, 9, 11, 11, 13, 14, 15, 17]
     for i in range (15) :
@@ -65,7 +66,10 @@ def create_deck(version_graph) :
     for i in range (1, 6) :
         for j in range (3) :
             deck.append(Card(True, i, False, 0, False, version_graph))
-    deck.append(Card(False, 0, False, 0, True, version_graph))
+    for i in range(len(list_player)):
+        temp_relic += list_player[i].nbr_relic
+    for i in range(round - temp_relic):
+        deck.append(Card(False, 0, False, 0, True, version_graph))
     random.shuffle(deck)
     return deck
 
@@ -294,7 +298,7 @@ def round(list_player, round) :
             list_player
     '''
     version_graph = False
-    deck = create_deck(version_graph)
+    deck = create_deck(version_graph, round, list_player)
     deck_shown = []
     end_round = False
     while not end_round :
