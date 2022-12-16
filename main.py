@@ -1,42 +1,84 @@
 import random
 import os
+import time
+from tkinter import *
+
 
 class player :
     def __init__(self, name) :
+        '''
+            Initialise l'objet player
+
+            name (str) : nom du joueur
+            total_gem (int) : nombre de gemmes du joueur au campement
+            temp_gem (int) : nombre de gemmes temporaires du joueur pendant une manche
+            in_game (boolean) : état du joueur (True = en jeu, False = au campement)
+            nbr_relic (int) : nombre de reliques découvertes
+        '''
         self.name = name
         self.total_gem = 0
         self.temp_gem = 0
         self.in_game = True
         self.nbr_relic = 0
-        # Affecte une image à chaque carte, supprimer pour jouer dans le terminal
-        if self.type_danger :
-            self.img = PhotoImage(file = "images/da"+str(self.type_danger)+"_card.png")
-        elif self.treasure :
-            self.img = PhotoImage(file = "images/tr_card.png")
-        else :
-            self.img = PhotoImage(file = "images/rel_card.png")
 
 class Card :
-    def __init__(self, danger, type_danger, treasure, nbr_gem, relic) :
+    def __init__(self, danger, type_danger, treasure, nbr_gem, relic, version_graph) :
+        '''
+            Initialise l'objet Card
+
+            danger (boolean) : indique si la carte est une carte danger
+            type_danger (int) : indice du danger de la carte (0 si pas un danger, sinon de 1 à 5)
+            treasure (boolean) : indique si la carte est une carte trésor
+            nbr_gem (int) : nombre de gemmes de la carte (0 si pas un trésor, sinon 1, 2, 3, 4, 5, 7, 9, 11, 13, 14, 15 ou 17)
+            relic (boolean) : indique si la carte est une relique
+
+            Si la version du jeu est la version graphique (version_graph == True):
+                Affecte à chaque carte une image de son type (trésor, relique, danger (une carte par type de danger))
+        '''
         self.danger = danger
         self.type_danger = type_danger
         self.treasure = treasure
         self.nbr_gem = nbr_gem
         self.relic = relic
-    
-def create_deck() :
+        if version_graph :
+            if self.type_danger :
+                self.img = PhotoImage(file = "images/da"+str(self.type_danger)+"_card.png")
+            elif self.treasure :
+                self.img = PhotoImage(file = "images/tr_card.png")
+            else :
+                self.img = PhotoImage(file = "images/rel_card.png")
+
+def create_deck(version_graph) :
+    '''
+        Crée le deck utilisé dans la partie pour piocher des cartes
+
+        ENTREE
+            version_graph (boolean) : indique si la version jouée est la version graphique (True si oui)
+        
+        SORTIE
+            deck (list) : liste d'objets Card
+    '''
     deck = []
     val_treasure = [1, 2, 3, 4, 5, 5, 7, 7, 9, 11, 11, 13, 14, 15, 17]
     for i in range (15) :
-        deck.append(Card(False, 0, True, val_treasure[i], False))
+        deck.append(Card(False, 0, True, val_treasure[i], False, version_graph))
     for i in range (1, 6) :
         for j in range (3) :
-            deck.append(Card(True, i, False, 0, False))
-    deck.append(Card(False, 0, False, 0, True))
+            deck.append(Card(True, i, False, 0, False, version_graph))
+    deck.append(Card(False, 0, False, 0, True, version_graph))
     random.shuffle(deck)
     return deck
 
 def start_game():
+    '''
+        Prépare les liste des joueurs en demandant le nombre et le nom de chacun
+
+        ENTREE
+            ---
+
+        SORTIE
+            list_player (list) : liste des joueurs
+    '''
     #Récupération du nombre de joueurs
     nb_player = int(input("Combien de joueurs êtes-vous ?"))
     while nb_player > 8 or nb_player < 3 :
@@ -49,17 +91,18 @@ def start_game():
         name = str(input())
         list_player.append(player(name))
     
-    
     return list_player
 
 def draw(deck,deck_shown,list_player):
     '''
-        Prend la première carte du deck mélangé et la met sur le plateau de jeu (dans le dec affiché)
+        Prend la première carte du deck mélangé et la met sur le plateau de jeu (dans le deck affiché)
         Réparti les diamants de la carte entre les joueurs encore en jeu
+
         ENTREE
-            deck : liste de cartes, deck_shown : liste de cartes, list_player : liste de joueurs
+            deck (list) : liste de cartes, deck_shown (list) : liste de cartes, list_player (list) : liste de joueurs
+
         SORTIE
-            deck : liste de cartes, deck_shown : liste de cartes, list_player : liste de joueurs
+            deck, deck_shown, list_player
     '''
     new_card = deck[0]
     nbr_in_game = 0
@@ -80,10 +123,10 @@ def trap_check(deck_shown):
         Détecte si un piège est présent deux fois sur le plateau
     
         ENTREE
-            deck_shown : liste de cartes
+            deck_shown (list) : liste de cartes tirées
         
         SORTIE
-            trap_detected : booléen
+            trap_detected (boolean) : indique si un piège a été détecté
     '''
     trap_detected = False
     trap_in_game = []
@@ -102,10 +145,10 @@ def find_relic_val(list_player):
         Trouve la valeur de la prochaine relique qui va sortir (5, 5, 5, 10, 10)
 
         ENTREE
-            list_player : liste de joueurs
+            list_player (list) : liste de joueurs
         
         SORTIE
-            val_relic : entier (5 ou 10)
+            val_relic (int) : valeur de la prochaine relique sortie (5 ou 10)
     '''
     relic_sum = 0
     val_relic = 0
@@ -120,16 +163,14 @@ def find_relic_val(list_player):
 def player_action(deck_shown,list_player):
     '''
         Demande au joueur s'il souhaite continuer à jouer ou rentrer au campement
-        Si il veut sortir, répartit les gemmes an conséquence
+
         ENTREE
             deck_shown : liste de cartes, list_player : liste de joueurs
         
         SORTIE
-            deck_shown : liste de cartes, list_player : liste de joueurs
+            deck_shown, list_player
     '''
     player_out = []
-    temp_total = 0
-    temp_relic = []
     for i in range (len(list_player)):
         if list_player[i].in_game :
             is_out = ''
@@ -138,6 +179,20 @@ def player_action(deck_shown,list_player):
             if is_out == 'O' :
                 list_player[i].in_game = False
                 player_out.append(i)
+    return player_action_repart(deck_shown,list_player,player_out)
+
+def player_action_repart(deck_shown, list_player, player_out):
+    '''
+        Réparti les gemmes encore sur le plateau entre les joueurs qui sortent (si elles ne peuvent pas toutes être partagées, le reste reste sur le plateau)
+
+        ENTREE
+            deck_shown (list) : liste de cartes, list_player (list) : liste de joueurs, player_out (list) : liste des joueurs qui viennent de sortir
+        
+        SORTIE
+            deck_shown, list_player
+    '''
+    temp_relic = []
+    temp_total = 0
     if len(player_out) != 0 :
         for i in range(len(deck_shown)):
             temp_total += deck_shown[i].nbr_gem
@@ -167,17 +222,17 @@ def player_action(deck_shown,list_player):
                     deck_shown.remove(to_remove)
     return deck_shown, list_player
 
-
 def check_end(list_player):
     '''
-        Détecte les conditions de fin de manche
-        Détecte si tous les joueurs sont sortis
-        Renvoie True si tous les joueurs sont sortis ou si un piège est présent deux fois sur le plateau
+        Détecte les conditions de fin de manche :
+            Détecte si tous les joueurs sont sortis
+            Renvoie True si tous les joueurs sont sortis ou si un piège est présent deux fois sur le plateau
+
         ENTREE
-            list_player : liste de joueurs, trap_detected : booléen
+            list_player (list) : liste de joueurs, trap_detected (boolean) : indique si un piège a été détecté
         
         SORTIE
-            end_round : booléen
+            end_round (boolean) : indique si  la manche doit s'arrêter
     '''
     end_round = False
     player_out = 0
@@ -193,14 +248,15 @@ def display(deck_shown,list_player,round):
         Affiche les cartes présentes sur le plateau :
             Les cartes trésor sont affichées avec le nombre de gemmes qu'il leur reste après la distribution
             Les cartes danger sont affichées avec leur type de danger (1 à 5)
+
         Affiche pour chaque joueur :
             Son nom
             Son statut dans le jeu (dans le temple / au camp)
-            Le nombre de gemmes qu'il a dans le temple
-            Le nombre de gemmes qu'il a au camp
+            Le nombre de gemmes qu'il a avec lui dans le temple
+            Le nombre de gemmes qu'il a au campement
         
         ENTREE
-            deck_shown : liste de cartes, list_player : liste de joueurs
+            deck_shown (list) : liste de cartes, list_player (list) : liste de joueurs
         
         SORTIE
             ---
@@ -228,7 +284,17 @@ def display(deck_shown,list_player,round):
     print()
 
 def round(list_player, round) :
-    deck = create_deck()
+    '''
+        Fonction de tours, appelée à chaque manche, détecte si une manche doit s'arrêter, affiche les cartes, demande les choix des joueurs, réparti les gemmes
+
+        ENTREE
+            list_player (list) : liste de joueurs, round (int) : numéro de manche
+        
+        SORTIE
+            list_player
+    '''
+    version_graph = False
+    deck = create_deck(version_graph)
     deck_shown = []
     end_round = False
     while not end_round :
@@ -238,17 +304,20 @@ def round(list_player, round) :
             draw(deck, deck_shown, list_player)
         if trap_check(deck_shown) :
             end_round = True
+            display(deck_shown, list_player, round)
+            time.sleep(2)
         if not end_round :
-            display(deck_shown, list_player, round) 
-            player_action(deck_shown, list_player) 
+            display(deck_shown, list_player, round)
+            player_action(deck_shown, list_player)
             display(deck_shown, list_player, round)
     return list_player
+
 def end_game(list_player):
     '''
         Classe les joueurs en fonction du nombre de rubis et les affiche
 
         ENTREE
-            list_player : liste de joueurs
+            list_player (list) : liste de joueurs
         
         SORTIE
             ---
@@ -267,12 +336,19 @@ def end_game(list_player):
         print(i+1,':',list_player[index_points[i]].name,temp_points[i])
         
 def game():
-    nround = 0
+    '''
+        Fonction principale du jeu pour la version en lignes de commandes
+
+        ENTREE
+            ---
+        
+        SORTIE
+            ---
+    '''
     list_player = start_game()
     for i in range (5) :
         for j in range (len(list_player)): # Remet tous les joueurs dans la partie
             list_player[j].in_game = True
-        nround += 1
-        list_player = round(list_player, nround)
+            list_player[j].temp_gem = 0
+        list_player = round(list_player, i)
     end_game(list_player)
-        
