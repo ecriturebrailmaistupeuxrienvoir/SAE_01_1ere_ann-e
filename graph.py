@@ -102,12 +102,12 @@ def button_creation_menu(win, set_nb_player):
             but_list (list) : Liste comprenant les boutons
     '''
     but_list = []
-    but_list.append(Button(win, text = '3', command = lambda : set_nb_player(3), cursor='hand2',font='Arial 11 bold', bg='gray65', height = 3, width = 4))
-    but_list.append(Button(win, text = '4', command = lambda : set_nb_player(4), cursor='hand2',font='Arial 11 bold', bg='gray65', height = 3, width = 4))
-    but_list.append(Button(win, text = '5', command = lambda : set_nb_player(5), cursor='hand2',font='Arial 11 bold', bg='gray65', height = 3, width = 4))
-    but_list.append(Button(win, text = '6', command = lambda : set_nb_player(6), cursor='hand2',font='Arial 11 bold', bg='gray65', height = 3, width = 4))
-    but_list.append(Button(win, text = '7', command = lambda : set_nb_player(7), cursor='hand2',font='Arial 11 bold', bg='gray65', height = 3, width = 4))
-    but_list.append(Button(win, text = '8', command = lambda : set_nb_player(8), cursor='hand2',font='Arial 11 bold', bg='gray65', height = 3, width = 4))
+    but_list.append(Button(win, text = '3', command = lambda : set_nb_player(3), activebackground = 'SteelBlue1', cursor='hand2',font='Arial 11 bold', bg='gray65', height = 3, width = 4))
+    but_list.append(Button(win, text = '4', command = lambda : set_nb_player(4), activebackground = 'SteelBlue1', cursor='hand2',font='Arial 11 bold', bg='gray65', height = 3, width = 4))
+    but_list.append(Button(win, text = '5', command = lambda : set_nb_player(5), activebackground = 'SteelBlue1', cursor='hand2',font='Arial 11 bold', bg='gray65', height = 3, width = 4))
+    but_list.append(Button(win, text = '6', command = lambda : set_nb_player(6), activebackground = 'SteelBlue1', cursor='hand2',font='Arial 11 bold', bg='gray65', height = 3, width = 4))
+    but_list.append(Button(win, text = '7', command = lambda : set_nb_player(7), activebackground = 'SteelBlue1', cursor='hand2',font='Arial 11 bold', bg='gray65', height = 3, width = 4))
+    but_list.append(Button(win, text = '8', command = lambda : set_nb_player(8), activebackground = 'SteelBlue1', cursor='hand2',font='Arial 11 bold', bg='gray65', height = 3, width = 4))
     return but_list
 
 
@@ -185,14 +185,14 @@ def button_creation_name(name_win, add_name):
             name_but_list (list) : Liste comprenant les boutons
     '''
     name_but_list = []
-    name_but_list.append(Button(name_win,text = "Confirmer", font='Arial 14',command = lambda : add_name(0), cursor='hand2'))
-    name_but_list.append(Button(name_win,text = "Confirmer", font='Arial 14',command = lambda : add_name(1), cursor='hand2'))
-    name_but_list.append(Button(name_win,text = "Confirmer", font='Arial 14',command = lambda : add_name(2), cursor='hand2'))
-    name_but_list.append(Button(name_win,text = "Confirmer", font='Arial 14',command = lambda : add_name(3), cursor='hand2'))
-    name_but_list.append(Button(name_win,text = "Confirmer", font='Arial 14',command = lambda : add_name(4), cursor='hand2'))
-    name_but_list.append(Button(name_win,text = "Confirmer", font='Arial 14',command = lambda : add_name(5), cursor='hand2'))
-    name_but_list.append(Button(name_win,text = "Confirmer", font='Arial 14',command = lambda : add_name(6), cursor='hand2'))
-    name_but_list.append(Button(name_win,text = "Confirmer", font='Arial 14',command = lambda : add_name(7), cursor='hand2'))
+    name_but_list.append(Button(name_win,text = "Confirmer", font='Arial 14',command = lambda : add_name(0), activebackground = 'SteelBlue1', cursor='hand2'))
+    name_but_list.append(Button(name_win,text = "Confirmer", font='Arial 14',command = lambda : add_name(1), activebackground = 'SteelBlue1', cursor='hand2'))
+    name_but_list.append(Button(name_win,text = "Confirmer", font='Arial 14',command = lambda : add_name(2), activebackground = 'SteelBlue1', cursor='hand2'))
+    name_but_list.append(Button(name_win,text = "Confirmer", font='Arial 14',command = lambda : add_name(3), activebackground = 'SteelBlue1', cursor='hand2'))
+    name_but_list.append(Button(name_win,text = "Confirmer", font='Arial 14',command = lambda : add_name(4), activebackground = 'SteelBlue1', cursor='hand2'))
+    name_but_list.append(Button(name_win,text = "Confirmer", font='Arial 14',command = lambda : add_name(5), activebackground = 'SteelBlue1', cursor='hand2'))
+    name_but_list.append(Button(name_win,text = "Confirmer", font='Arial 14',command = lambda : add_name(6), activebackground = 'SteelBlue1', cursor='hand2'))
+    name_but_list.append(Button(name_win,text = "Confirmer", font='Arial 14',command = lambda : add_name(7), activebackground = 'SteelBlue1', cursor='hand2'))
 
     return name_but_list
 
@@ -377,23 +377,23 @@ def button_creation_action(player_win,set_state):
     stay_list = []
     quit_list = []
 
-    stay_list.append(Button(player_win, text = "Rester", font='Arial 12', command = lambda: set_state(True, 0), cursor='hand2'))
-    stay_list.append(Button(player_win, text = "Rester", font='Arial 12', command = lambda: set_state(True, 1), cursor='hand2'))
-    stay_list.append(Button(player_win, text = "Rester", font='Arial 12', command = lambda: set_state(True, 2), cursor='hand2'))
-    stay_list.append(Button(player_win, text = "Rester", font='Arial 12', command = lambda: set_state(True, 3), cursor='hand2'))
-    stay_list.append(Button(player_win, text = "Rester", font='Arial 12', command = lambda: set_state(True, 4), cursor='hand2'))
-    stay_list.append(Button(player_win, text = "Rester", font='Arial 12', command = lambda: set_state(True, 5), cursor='hand2'))
-    stay_list.append(Button(player_win, text = "Rester", font='Arial 12', command = lambda: set_state(True, 6), cursor='hand2'))
-    stay_list.append(Button(player_win, text = "Rester", font='Arial 12', command = lambda: set_state(True, 7), cursor='hand2'))
+    stay_list.append(Button(player_win, text = "Rester", font='Arial 12', command = lambda: set_state(True, 0), activebackground = 'SteelBlue1', cursor='hand2'))
+    stay_list.append(Button(player_win, text = "Rester", font='Arial 12', command = lambda: set_state(True, 1), activebackground = 'SteelBlue1', cursor='hand2'))
+    stay_list.append(Button(player_win, text = "Rester", font='Arial 12', command = lambda: set_state(True, 2), activebackground = 'SteelBlue1', cursor='hand2'))
+    stay_list.append(Button(player_win, text = "Rester", font='Arial 12', command = lambda: set_state(True, 3), activebackground = 'SteelBlue1', cursor='hand2'))
+    stay_list.append(Button(player_win, text = "Rester", font='Arial 12', command = lambda: set_state(True, 4), activebackground = 'SteelBlue1', cursor='hand2'))
+    stay_list.append(Button(player_win, text = "Rester", font='Arial 12', command = lambda: set_state(True, 5), activebackground = 'SteelBlue1', cursor='hand2'))
+    stay_list.append(Button(player_win, text = "Rester", font='Arial 12', command = lambda: set_state(True, 6), activebackground = 'SteelBlue1', cursor='hand2'))
+    stay_list.append(Button(player_win, text = "Rester", font='Arial 12', command = lambda: set_state(True, 7), activebackground = 'SteelBlue1', cursor='hand2'))
 
-    quit_list.append(Button(player_win, text = "Sortir", command = lambda: set_state(False, 0), cursor='hand2'))
-    quit_list.append(Button(player_win, text = "Sortir", command = lambda: set_state(False, 1), cursor='hand2'))
-    quit_list.append(Button(player_win, text = "Sortir", command = lambda: set_state(False, 2), cursor='hand2'))
-    quit_list.append(Button(player_win, text = "Sortir", command = lambda: set_state(False, 3), cursor='hand2'))
-    quit_list.append(Button(player_win, text = "Sortir", command = lambda: set_state(False, 4), cursor='hand2'))
-    quit_list.append(Button(player_win, text = "Sortir", command = lambda: set_state(False, 5), cursor='hand2'))
-    quit_list.append(Button(player_win, text = "Sortir", command = lambda: set_state(False, 6), cursor='hand2'))
-    quit_list.append(Button(player_win, text = "Sortir", command = lambda: set_state(False, 7), cursor='hand2'))
+    quit_list.append(Button(player_win, text = "Sortir", command = lambda: set_state(False, 0), activebackground = 'red2', cursor='hand2'))
+    quit_list.append(Button(player_win, text = "Sortir", command = lambda: set_state(False, 1), activebackground = 'red2', cursor='hand2'))
+    quit_list.append(Button(player_win, text = "Sortir", command = lambda: set_state(False, 2), activebackground = 'red2', cursor='hand2'))
+    quit_list.append(Button(player_win, text = "Sortir", command = lambda: set_state(False, 3), activebackground = 'red2', cursor='hand2'))
+    quit_list.append(Button(player_win, text = "Sortir", command = lambda: set_state(False, 4), activebackground = 'red2', cursor='hand2'))
+    quit_list.append(Button(player_win, text = "Sortir", command = lambda: set_state(False, 5), activebackground = 'red2', cursor='hand2'))
+    quit_list.append(Button(player_win, text = "Sortir", command = lambda: set_state(False, 6), activebackground = 'red2', cursor='hand2'))
+    quit_list.append(Button(player_win, text = "Sortir", command = lambda: set_state(False, 7), activebackground = 'red2', cursor='hand2'))
     return stay_list, quit_list
 
 
